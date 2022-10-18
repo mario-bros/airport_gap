@@ -6,6 +6,7 @@ set :repo_url, "https://github.com/dennmart/airport_gap.git"
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
+set :branch, "capistrano-setup"
 
 # Default deploy_to directory is /var/www/my_app_name
 # set :deploy_to, "/var/www/my_app_name"
@@ -25,6 +26,7 @@ set :repo_url, "https://github.com/dennmart/airport_gap.git"
 
 # Default value for linked_dirs is []
 # append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "tmp/webpacker", "public/system", "vendor", "storage"
+# append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", ".bundle"
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
@@ -37,3 +39,14 @@ set :repo_url, "https://github.com/dennmart/airport_gap.git"
 
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :always, forward_agent: true
+
+namespace :deploy do
+  desc "Seed database"
+  task :seed_database do
+    on roles(:all) do
+      within current_path do
+        execute :bundle, :exec, "rails", "db:seed", "RAILS_ENV=production"
+      end
+    end
+  end
+end

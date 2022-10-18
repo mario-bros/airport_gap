@@ -60,4 +60,5 @@
 #     # password: "please use keys"
 #   }
 
-server "ec2-52-192-142-233.ap-northeast-1.compute.amazonaws.com", user: "ec2-user", roles: %w{app db web}
+set :rails_env, "production"
+server "ec2-52-192-142-233.ap-northeast-1.compute.amazonaws.com", user: "ec2-user", roles: %w{app db web worker}
