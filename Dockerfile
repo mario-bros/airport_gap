@@ -5,7 +5,7 @@ FROM ruby:3.3.0-alpine AS build
 WORKDIR /app
 
 # Set a random secret key base so we can precompile assets.
-ENV SECRET_KEY_BASE airport_gap_secret_key_base
+# ENV SECRET_KEY_BASE airport_gap_secret_key_base
 
 # Install necessary packages to build gems and assets.
 RUN apk add --no-cache \
@@ -31,8 +31,8 @@ RUN bin/rails assets:precompile
 #####################################################################
 # Stage 2: Copy gems and assets from build stage and finalize image.
 #####################################################################
-FROM ruby:3.3.0-alpine
-WORKDIR /app
+# FROM ruby:3.3.0-alpine
+# WORKDIR /app
 
 # Install necessary dependencies required to run the Rails application.
 RUN apk add --no-cache \
@@ -45,7 +45,7 @@ RUN apk add --no-cache \
 RUN bundle config set --local path "vendor/bundle"
 
 # Copy everything from the build stage, including gems and precompiled assets.
-COPY --from=build /app /app
+# COPY --from=build /app /app
 
 # Prepare the database before starting the application.
 ENTRYPOINT ["/app/bin/docker-entrypoint"]
